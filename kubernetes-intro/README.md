@@ -8,17 +8,23 @@
 
 ## Выполнение 
 ### Создание namespace
-*kubectl create -f ./namespace.yaml*
+*kubectl apply -f ./manifests/namespace.yaml*
 
 #### Проверка namespace
 *kubectl get ns*
 ![screenshot](images/namespaces.jpg)
 
 ### Создание pod
-*kubectl apply -f ./pod.yaml*
+*kubectl apply -f ./manifests/configmap.yaml*
+*kubectl apply -f ./manifests/pod.yaml*
 
 #### Проверка pod
 *kubectl get pods -n homework*
 ![screenshot](images/pods.jpg)
 
 *kubectl get pod kubernetes-intro -n homework -o yaml*
+
+#### Проверка веб-сервера
+*kubectl port-forward pod/kubernetes-intro 8080:8000 -n homework*
+
+Далее перейти по ссылке http://localhost:8080/
