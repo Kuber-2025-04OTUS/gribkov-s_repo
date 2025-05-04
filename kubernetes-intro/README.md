@@ -16,6 +16,7 @@
 
 ### Создание pod
 *kubectl apply -f ./manifests/configmap.yaml*
+
 *kubectl apply -f ./manifests/pod.yaml*
 
 #### Проверка pod
