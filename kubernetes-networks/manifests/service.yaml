@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubernetes-networks-service
+  namespace: homework
+spec:
+  selector:
+    app.kubernetes.io/name: kubernetes-networks
+    app.kubernetes.io/instance: kubernetes-networks-instance
+  ports:
+    - name: http-k8s-nw-svc
+      protocol: TCP
+      port: 80
+      targetPort: http-k8s-nw
+  type: ClusterIP
