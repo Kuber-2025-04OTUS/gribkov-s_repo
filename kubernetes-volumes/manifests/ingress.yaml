@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kubernetes-volumes-ingress
+  namespace: homework
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: homework.otus
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: kubernetes-volumes-service
+            port:
+              name: ttp-k8s-vol-svc
+      - path: /conf/file
+        pathType: Prefix
+        backend:
+          service:
+            name: kubernetes-volumes-service
+            port:
+              name: ttp-k8s-vol-svc

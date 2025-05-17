@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubernetes-volumes
+  namespace: homework
+  labels: &labels
+    app.kubernetes.io/name: kubernetes-volumes
+    app.kubernetes.io/instance: kubernetes-volumes-instance
+spec:
+  replicas: 3
+  selector:
+    matchLabels: *labels
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels: *labels
+    spec:
+      nodeSelector:
+        homework: "true"
+      containers:
+        - name: webserver
+          image: nginx:1.14.2
+          ports:
+          - containerPort: 8000
+            name: http-k8s-vol
+          volumeMounts:
+          - name: files
+            mountPath: /homework
+          - name: nginx-conf
+            mountPath: /etc/nginx/conf.d
+          - name: kubernetes-volumes-conf
+            mountPath: /homework/conf
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sh","-c","nginx -s quit; while killall -0 nginx; do sleep 1; done; rm /homework/index.html"]
+          readinessProbe:
+            httpGet:
+              path: /index.html
+              port: 8000
+            initialDelaySeconds: 3
+            periodSeconds: 10
+            failureThreshold: 3
+      initContainers:
+      - name: init
+        image: busybox:1.28
+        command: ["/bin/sh", "-c", "echo '<!doctype html><title>kubernetes-volumes</title>' > /init/index.html"]
+        volumeMounts:
+        - name: files
+          mountPath: /init
+      volumes:
+      - name: files
+        persistentVolumeClaim:
+            claimName: kubernetes-volumes-pvc
+      - name: nginx-conf
+        configMap:
+            name: nginx-conf
+      - name: kubernetes-volumes-conf
+        configMap:
+            name: kubernetes-volumes-conf

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kubernetes-volumes-conf
+  namespace: homework
+data:
+  file.json: |
+   {
+     "a": "x",
+     "b": 42
+   }
