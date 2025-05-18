@@ -4,24 +4,25 @@ metadata:
   name: kubernetes-volumes-ingress
   namespace: homework
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   ingressClassName: nginx
   rules:
   - host: homework.otus
     http:
       paths:
-      - path: /
-        pathType: Prefix
+      - path: /()(.*)
+        pathType: ImplementationSpecific
         backend:
           service:
             name: kubernetes-volumes-service
             port:
-              name: ttp-k8s-vol-svc
-      - path: /conf/file
-        pathType: Prefix
+              name: http-k8s-vol-s
+      - path: /homework(/.*)(/|$)
+        pathType: ImplementationSpecific
         backend:
           service:
             name: kubernetes-volumes-service
             port:
-              name: ttp-k8s-vol-svc
+              name: http-k8s-vol-s

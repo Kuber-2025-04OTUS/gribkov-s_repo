@@ -8,7 +8,7 @@ spec:
     app.kubernetes.io/name: kubernetes-volumes
     app.kubernetes.io/instance: kubernetes-volumes-instance
   ports:
-    - name: http-k8s-vol-svc
+    - name: http-k8s-vol-s
       protocol: TCP
       port: 80
       targetPort: http-k8s-vol

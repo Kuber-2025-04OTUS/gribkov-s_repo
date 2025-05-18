@@ -85,6 +85,6 @@
 
 Далее перейти по ссылке http://homework.otus/conf/file или отправить get запрос с помощью утилиты curl
 
-*curl http://homework.otus/conf/file*
+*curl http://homework.otus/conf/file.json*
 
-![screenshot](images/homework_otus_conf_file_response.jpg)
+![screenshot](images/response.jpg)
