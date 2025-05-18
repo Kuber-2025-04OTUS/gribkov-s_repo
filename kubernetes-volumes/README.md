@@ -83,7 +83,7 @@
 
 Сначала необходимо добавить в файл /etc/hosts строку "127.0.0.1 homework.otus"
 
-Далее перейти по ссылке http://homework.otus/conf/file или отправить get запрос с помощью утилиты curl
+Далее перейти по ссылке http://homework.otus/conf/file.json или отправить get запрос с помощью утилиты curl
 
 *curl http://homework.otus/conf/file.json*
 
