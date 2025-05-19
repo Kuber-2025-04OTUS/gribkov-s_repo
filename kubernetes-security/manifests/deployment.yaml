@@ -5,7 +5,7 @@ metadata:
   namespace: homework
   labels: &labels
     app.kubernetes.io/name: kubernetes-security
-    app.kubernetes.io/instance: kubernetes-networks-security
+    app.kubernetes.io/instance: kubernetes-security-instance
 spec:
   replicas: 3
   selector:
@@ -43,7 +43,13 @@ spec:
       initContainers:
       - name: init
         image: busybox:1.28
-        command: ["/bin/sh", "-c", "echo '<!doctype html><title>kubernetes-networks</title>' > /init/index.html"]
+        command: ["/bin/sh", "-c", "echo '<!doctype html><title>kubernetes-security</title>' > /init/index.html"]
+        volumeMounts:
+        - name: files
+          mountPath: /init
+      - name: init-metrics
+        image: curlimages/curl:8.13.0
+        command: ["/bin/sh", "-c", "SERVICEACCOUNT=/var/run/secrets/kubernetes.io/serviceaccount; TOKEN=$(cat ${SERVICEACCOUNT}/token); CACERT=${SERVICEACCOUNT}/ca.crt; curl --cacert ${CACERT} --header 'Authorization: Bearer ${TOKEN}' -X GET https://kubernetes.default.svc/metrics > /init/metrics.html"]
         volumeMounts:
         - name: files
           mountPath: /init
