@@ -8,7 +8,6 @@
 - Контейнеры должны иметь readiness пробу, вызывающую URL /index.html.
 - Создать service типа ClusterIP, направляющий трафик на поды, управляемые deployment.
 - Создать объект типа ingress, направляющий все http запросы к хосту homework.otus на service
-- Создать service account monitoring и дать ему доступ к эндпоинту /metrics кластера
 - В процессе запуска pod с deployment должно происходить обращение к эндпоинту /metric кластера, результат ответа должен сохраняться в файл metrics.html, доступный по адресу http://homework.otus/metrics.html
 - Создать service account cd и дать ему роль admin в рамках namespace homework
 - Создать kubeconfig для service account cd
@@ -96,7 +95,7 @@
 
 ![screenshot](images/service_account_monitoring_check.jpg)
 
-Для проверки полученных метрик клстера сначала необходимо добавить в файл /etc/hosts строку "127.0.0.1 homework.otus"
+Для проверки полученных метрик кластера сначала необходимо добавить в файл /etc/hosts строку "127.0.0.1 homework.otus"
 
 Далее перейти по ссылке http://homework.otus/metrics.html или отправить get запрос с помощью утилиты curl
 
