@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: monitoring
+  namespace: homework
+  annotations:
+    kubernetes.io/enforce-mountable-secrets: "true"

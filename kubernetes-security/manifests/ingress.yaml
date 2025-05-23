@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kubernetes-security-ingress
+  namespace: homework
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: homework.otus
+    http:
+      paths:
+      - path: /()(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: kubernetes-security-service
+            port:
+              name: http-k8s-sec-s
+      - path: /homework(/.*)(/|$)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: kubernetes-security-service
+            port:
+              name: http-k8s-sec-s
