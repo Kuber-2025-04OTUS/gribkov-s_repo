@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.service.name }}
+  namespace: {{ .Values.namespace.name }}
+spec:
+  selector:
+    app.kubernetes.io/name: {{ .Values.deployment.name }}
+    app.kubernetes.io/instance: {{ .Values.deployment.instance }}
+  ports:
+    - name: {{ .Values.service.portName }}
+      protocol: {{ .Values.service.protocol }}
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.deployment.containers.webserver.portName }}
+  type: {{ .Values.service.type }}
