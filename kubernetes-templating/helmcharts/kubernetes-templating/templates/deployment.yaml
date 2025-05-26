@@ -36,7 +36,7 @@ spec:
           lifecycle:
             preStop:
               exec:
-                command: {{ .Values.deployment.containers.webserver.preStopCommand }}
+                command: ["/bin/sh","-c","nginx -s quit; while killall -0 nginx; do sleep 1; done; rm {{ .Values.deployment.containers.webserver.volumeMounts.filesExchange }}/{{ .Values.configmap.nginxConf.index }}"]
           {{- if .Values.deployment.containers.webserver.readinessProbe.enabled }}      
           readinessProbe:
             {{ with .Values.probes.webserver.readinessProbe }}
@@ -51,7 +51,7 @@ spec:
       initContainers:
       - name: {{ .Values.deployment.initContainers.createIndex.name }}
         image: "{{ .Values.deployment.initContainers.createIndex.image.repository }}:{{ .Values.deployment.initContainers.createIndex.image.tag }}"
-        command: {{ .Values.deployment.initContainers.createIndex.command }}
+        command: ["/bin/sh", "-c", "echo '<!doctype html><title>{{ .Values.deployment.name }}</title>' > {{ .Values.deployment.initContainers.createIndex.volumeMounts.filesExchange }}/{{ .Values.configmap.nginxConf.index }}" ]
         volumeMounts:
         - name: {{ .Values.deployment.volumes.filesExchange }}
           mountPath: {{ .Values.deployment.initContainers.createIndex.volumeMounts.filesExchange }}

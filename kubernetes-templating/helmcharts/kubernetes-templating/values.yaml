@@ -24,17 +24,7 @@ pvc:
 configmap:
   nginxConf:
     name: nginx-conf
-    data:
-      default.conf: |
-        server {
-            listen 8000;
-            listen [::]:8000;
-
-            location / {
-              root   /homework;
-              index  index.html;
-            }
-        }
+    index: index.html
 
 deployment:
   name: kubernetes-templating
@@ -55,7 +45,6 @@ deployment:
       volumeMounts:
         filesExchange: /homework
         nginxConf: /etc/nginx/conf.d
-      preStopCommand: ["/bin/sh","-c","nginx -s quit; while killall -0 nginx; do sleep 1; done; rm /homework/index.html"]
       readinessProbe:
         enabled: true
   initContainers:
