@@ -40,12 +40,7 @@ spec:
           {{- if .Values.deployment.containers.webserver.readinessProbe.enabled }}      
           readinessProbe:
             {{ with .Values.probes.webserver.readinessProbe }}
-              httpGet:
-                path: {{ .httpGet.path }}
-                port: {{ .httpGet.port }}
-              initialDelaySeconds: {{ .initialDelaySeconds }}
-              periodSeconds: {{ .periodSeconds }}
-              failureThreshold: {{ .failureThreshold }}
+              {{- toYaml . | nindent 12 }}
             {{- end}}
           {{- end}}
       initContainers:

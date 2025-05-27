@@ -13,7 +13,7 @@ pv:
   accessModes:
     - ReadWriteOnce
   storage: 200Mi
-  path: "/mnt/kubernetes-templating/data"
+  path: /mnt/kubernetes-templating/data
 
 pvc:
   name: kubernetes-templating-pvc
@@ -76,7 +76,7 @@ service:
   port: 80
   portName: http-k8s-temp-s
   protocol: TCP
-  type: LoadBalancer
+  type: ClusterIP
 
 ingress:
   name: kubernetes-templating-ingress
