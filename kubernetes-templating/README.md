@@ -77,4 +77,20 @@
 
 ### Задача 2
 #### Развертывание
+*cd ./helmfiles/kubernetes-templating-kafka*
 
+*helmfile apply*
+![screenshot](images/pt2/kafka_deploy.jpg)
+
+*kubectl get all -n prod*
+![screenshot](images/pt2/kafka_prod.jpg)
+
+*kubectl get all -n dev*
+![screenshot](images/pt2/kafka_dev.jpg)
+
+#### Проверка работоспособности
+Создать топики на prod и dev кластерах kafka, записать в них сообщения с помощью kafka producer, прочитать их с помощью kafka consumer.
+Можно использовать стандартные утилиты, доступные непосредственно в контейнерах 
+- kafka-topics.sh
+- kafka-console-producer.sh
+- kafka-console-consumer.sh
