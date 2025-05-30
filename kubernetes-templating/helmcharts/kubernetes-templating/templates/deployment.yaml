@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.name }}
+  namespace: {{ .Values.namespace.name }}
+  labels: &labels
+    app.kubernetes.io/name: {{ .Values.deployment.name }}
+    app.kubernetes.io/instance: {{ .Values.deployment.instance }}
+spec:
+  replicas: {{ .Values.deployment.replicaCount }}
+  selector:
+    matchLabels: *labels
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: {{ .Values.deployment.maxUnavailable }}
+  template:
+    metadata:
+      labels: *labels
+    spec:
+      {{- with .Values.deployment.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Values.deployment.containers.webserver.name }}
+          image: "{{ .Values.deployment.containers.webserver.image.repository }}:{{ .Values.deployment.containers.webserver.image.tag }}"
+          ports:
+          - containerPort: {{ .Values.deployment.containers.webserver.port }}
+            name: {{ .Values.deployment.containers.webserver.portName }}
+          volumeMounts:
+          - name: {{ .Values.deployment.volumes.filesExchange }}
+            mountPath: {{ .Values.deployment.containers.webserver.volumeMounts.filesExchange }}
+          - name: {{ .Values.deployment.volumes.nginxConf }}
+            mountPath: {{ .Values.deployment.containers.webserver.volumeMounts.nginxConf }}
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sh","-c","nginx -s quit; while killall -0 nginx; do sleep 1; done; rm {{ .Values.deployment.containers.webserver.volumeMounts.filesExchange }}/{{ .Values.configmap.nginxConf.index }}"]
+          {{- if .Values.deployment.containers.webserver.readinessProbe.enabled }}      
+          readinessProbe:
+            {{ with .Values.probes.webserver.readinessProbe }}
+              {{- toYaml . | nindent 12 }}
+            {{- end}}
+          {{- end}}
+      initContainers:
+      - name: {{ .Values.deployment.initContainers.createIndex.name }}
+        image: "{{ .Values.deployment.initContainers.createIndex.image.repository }}:{{ .Values.deployment.initContainers.createIndex.image.tag }}"
+        command: ["/bin/sh", "-c", "echo '<!doctype html><title>{{ .Values.deployment.name }}</title>' > {{ .Values.deployment.initContainers.createIndex.volumeMounts.filesExchange }}/{{ .Values.configmap.nginxConf.index }}" ]
+        volumeMounts:
+        - name: {{ .Values.deployment.volumes.filesExchange }}
+          mountPath: {{ .Values.deployment.initContainers.createIndex.volumeMounts.filesExchange }}
+      volumes:
+      - name: {{ .Values.deployment.volumes.filesExchange }}
+        persistentVolumeClaim:
+            claimName: {{ .Values.pvc.name }}
+      - name: {{ .Values.deployment.volumes.nginxConf }}
+        configMap:
+            name: {{ .Values.configmap.nginxConf.name }}

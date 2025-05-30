@@ -1,0 +1,86 @@
+namespace:
+  name: homework
+    
+storageClass:
+  name: kubernetes-templating-storage
+  provisioner: k8s.io/minikube-hostpath
+  isDefault: false
+  reclaimPolicy: Retain
+  volumeBindingMode: Immediate
+
+pv:
+  name: kubernetes-templating-pv
+  accessModes:
+    - ReadWriteOnce
+  storage: 200Mi
+  path: /mnt/kubernetes-templating/data
+
+pvc:
+  name: kubernetes-templating-pvc
+  accessModes:
+    - ReadWriteOnce
+  storage: 100Mi
+
+configmap:
+  nginxConf:
+    name: nginx-conf
+    index: index.html
+
+deployment:
+  name: kubernetes-templating
+  instance: kubernetes-templating-instance
+  replicaCount: 3
+  maxUnavailable: 1
+  nodeSelector:
+    homework: "true"
+  containers:
+    webserver:
+      name: webserver
+      image:
+        repository: nginx
+        tag: 1.14.2
+        pullPolicy: IfNotPresent
+      port: 8000
+      portName: http-k8s-temp
+      volumeMounts:
+        filesExchange: /homework
+        nginxConf: /etc/nginx/conf.d
+      readinessProbe:
+        enabled: true
+  initContainers:
+    createIndex:
+      name: init
+      image:
+        repository: busybox
+        tag: 1.28
+        pullPolicy: IfNotPresent
+      command: ["/bin/sh", "-c", "echo '<!doctype html><title>kubernetes-volumes</title>' > /init/index.html"]
+      volumeMounts:
+        filesExchange: /init
+  volumes:
+    filesExchange: files
+    nginxConf: nginx-conf
+  
+probes:
+  webserver:
+    readinessProbe:
+      httpGet:
+        path: /index.html
+        port: 8000
+      initialDelaySeconds: 3
+      periodSeconds: 10
+      failureThreshold: 3
+
+service:
+  name: kubernetes-templating-service
+  port: 80
+  portName: http-k8s-temp-s
+  protocol: TCP
+  type: ClusterIP
+
+ingress:
+  name: kubernetes-templating-ingress
+  ingressClassName: nginx
+  host: homework.otus
+  commonPath: /()(.*)
+  dataPath: /homework(/.*)(/|$)
