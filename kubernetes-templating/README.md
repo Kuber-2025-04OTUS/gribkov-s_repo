@@ -3,7 +3,7 @@
 Для выполнения использовался Kubernetes Minikube и утилиты kubectl, helm и curl, для которых приведены использованные команды.
 
 ## Задача 1
-Создать helm-chart, позволяющее деплоить следующее приложение в namespace homework и включающее следующие компоненты:
+Создать helm-chart, позволяющий деплоить следующее приложение в namespace homework и включающее следующие компоненты:
 - storage сlass с provisioner https://k8s.io/minikube-hostpath и reclaimPolicy Retain
 - persistent volume и persistent volume claim, запрашивающие хранилище созданного storage сlass.
 - deployment, запускающий под service account monitoring 3 экземпляра pod c контейнерами, поднимающим веб-сервер, а также init-контейнерами, генерирующим файл index.html, используемый веб-сервером. 
@@ -15,7 +15,7 @@
 - сервис-зависимость из доступных community чартов
 
 ## Задача 2
-Установить kafka из bitnami helm-чарта используя helmfile, описав 2 сценария установки:
+Установить kafka из bitnami helm-чарта с помощью helmfile, описав 2 сценария установки:
 #### Prod
 - Установлен в namespace prod
 - Должно быть развернуто 5 брокеров
