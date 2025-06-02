@@ -1,0 +1,10 @@
+apiVersion: otus.homework/v1
+kind: MySQL
+metadata:
+  name: kubernetes-operators-mysql-1
+  namespace: default
+spec:
+  image: mysql:9.3.0
+  database: kubernetes-operators-db
+  password: abcde
+  storage_size: 1Gi
