@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubernetes-operators-mysql-operator
+  namespace: default
+  labels: &labels
+    app.kubernetes.io/name: kubernetes-operators-mysql-operator
+    app.kubernetes.io/instance: kubernetes-operators-mysql-operator-instance
+spec:
+  replicas: 1
+  selector:
+    matchLabels: *labels
+  template:
+    metadata:
+      labels: *labels
+    spec:
+      serviceAccountName: kubernetes-operators-sa
+      containers:
+        - name: mysql-operator
+          image: roflmaoinmysoul/mysql-operator:1.0.0
