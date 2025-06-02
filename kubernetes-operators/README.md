@@ -58,7 +58,7 @@
 ### 
 
 ### Проверка работы оператора с custom resource definition при создании инстанса MySQL 
-*kubectl apply -f ./manifests/mysql.yaml -n default*
+*kubectl apply -f ./manifests/mysql.yaml*
 
 *kubectl get mysql -n default*
 
