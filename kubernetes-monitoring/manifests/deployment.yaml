@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubernetes-monitoring
+  namespace: homework
+  labels: &labels
+    app.kubernetes.io/name: kubernetes-monitoring
+    app.kubernetes.io/instance: kubernetes-monitoring-instance
+spec:
+  replicas: 3
+  selector:
+    matchLabels: *labels
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels: *labels
+    spec:
+      nodeSelector:
+        homework: "true"
+      containers:
+        - name: webserver
+          image: nginx:1.14.2
+          ports:
+          - containerPort: 8000
+            name: http-k8s-mn
+          volumeMounts:
+          - name: files
+            mountPath: /homework
+          - name: nginx-conf
+            mountPath: /etc/nginx/conf.d
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sh","-c","nginx -s quit; while killall -0 nginx; do sleep 1; done; rm /homework/index.html"]
+          readinessProbe:
+            httpGet:
+              path: /index.html
+              port: 8000
+        - name: nginx-prometheus-exporter
+          image: nginx/nginx-prometheus-exporter:1.4.2
+          args: ["--nginx.scrape-uri=http://127.0.0.1:8080/nginx_status"]
+          ports:
+            - name: nginx-metrics
+              containerPort: 9113
+      initContainers:
+      - name: init
+        image: busybox:1.28
+        command: ["/bin/sh", "-c", "echo '<!doctype html><title>kubernetes-monitoring</title>' > /init/index.html"]
+        volumeMounts:
+        - name: files
+          mountPath: /init
+      volumes:
+      - name: files
+        emptyDir: {}
+      - name: nginx-conf
+        configMap:
+            name: nginx-conf

@@ -1,0 +1,14 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: kubernetes-monitoring-servicemonitor
+  namespace: homework
+  labels:
+    app.kubernetes.io/name: kubernetes-monitoring
+spec:
+  selector:
+    matchLabels:
+      app: kubernetes-monitoring-service
+  endpoints:
+  - port: nginx-metrics-svc
+    interval: 15s
