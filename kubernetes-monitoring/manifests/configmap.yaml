@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-conf
+  namespace: homework
+data:
+ default.conf: |
+    server {
+        listen 8000;
+        listen [::]:8000;
+
+        location / {
+          root   /homework;
+          index  index.html;
+        }
+        
+        location ~ /nginx-status {
+            stub_status on;
+            access_log off;
+            allow 127.0.0.1;
+            deny all;
+        }
+    }
