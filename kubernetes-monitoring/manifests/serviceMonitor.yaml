@@ -4,11 +4,16 @@ metadata:
   name: kubernetes-monitoring-servicemonitor
   namespace: homework
   labels:
-    app.kubernetes.io/name: kubernetes-monitoring
+    release: monitoring
 spec:
+  namespaceSelector:
+    matchNames:
+      - homework
   selector:
     matchLabels:
-      app: kubernetes-monitoring-service
+      app.kubernetes.io/name: kubernetes-monitoring
+      app.kubernetes.io/instance: kubernetes-monitoring-instance
   endpoints:
-  - port: nginx-metrics-svc
+  - port: nginx-metrics
     interval: 15s
+    scrapeTimeout: 5s

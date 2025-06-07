@@ -17,6 +17,9 @@ spec:
   template:
     metadata:
       labels: *labels
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9113"    
     spec:
       nodeSelector:
         homework: "true"
@@ -41,10 +44,10 @@ spec:
               port: 8000
         - name: nginx-prometheus-exporter
           image: nginx/nginx-prometheus-exporter:1.4.2
-          args: ["--nginx.scrape-uri=http://127.0.0.1:8080/nginx_status"]
+          args: ["--nginx.scrape-uri=http://127.0.0.1:8000/nginx-status"]
           ports:
-            - name: nginx-metrics
-              containerPort: 9113
+          - containerPort: 9113
+            name: nginx-metrics
       initContainers:
       - name: init
         image: busybox:1.28

@@ -3,17 +3,18 @@ kind: Service
 metadata:
   name: kubernetes-monitoring-service
   namespace: homework
-spec:
-  selector:
+  labels: &labels
     app.kubernetes.io/name: kubernetes-monitoring
     app.kubernetes.io/instance: kubernetes-monitoring-instance
+spec:
+  selector: *labels
   ports:
     - name: http-k8s-mn-svc
       protocol: TCP
       port: 80
       targetPort: http-k8s-mn
-    - name: nginx-metrics-svc
+    - name: nginx-metrics
       protocol: TCP
-      port: 9252
+      port: 9113
       targetPort: nginx-metrics
   type: ClusterIP
