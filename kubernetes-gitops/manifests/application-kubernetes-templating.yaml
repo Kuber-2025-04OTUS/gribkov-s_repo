@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kubernetes-templating
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-options: CreateNamespace=true
+spec:
+  project: otus
+  source:
+    repoURL: https://github.com/Kuber-2025-04OTUS/gribkov-s_repo.git
+    targetRevision: HEAD
+    path: kubernetes-templating/helmcharts/kubernetes-templating
+    helm:
+      parameters:
+      - name: deployment.replicaCount
+        value: 3
+      - name: deployment.nodeSelector.homework
+        value: "true"
+  destination:
+    name: catg80tbd2h0kcbrtiac
+    namespace: homework-helm
+  syncPolicy:
+    automated:
+      prune: true
+      selfheal: true

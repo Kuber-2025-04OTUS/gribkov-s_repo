@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kubernetes-networks
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-options: CreateNamespace=true
+spec:
+  project: otus
+  source:
+    repoURL: https://github.com/Kuber-2025-04OTUS/gribkov-s_repo.git
+    targetRevision: HEAD
+    path: kubernetes-networks/manifests
+  destination:
+    name: catg80tbd2h0kcbrtiac
+    namespace: homework
+  syncPolicy:
+    manual: {}
