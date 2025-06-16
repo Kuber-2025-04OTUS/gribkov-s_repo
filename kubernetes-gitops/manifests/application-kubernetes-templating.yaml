@@ -3,8 +3,6 @@ kind: Application
 metadata:
   name: kubernetes-templating
   namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-options: CreateNamespace=true
 spec:
   project: otus
   source:
@@ -14,13 +12,13 @@ spec:
     helm:
       parameters:
       - name: deployment.replicaCount
-        value: 3
+        value: "3"
       - name: deployment.nodeSelector.homework
         value: "true"
   destination:
-    name: catg80tbd2h0kcbrtiac
+    server: https://kubernetes.default.svc
     namespace: homework-helm
   syncPolicy:
     automated:
       prune: true
-      selfheal: true
+      selfHeal: true

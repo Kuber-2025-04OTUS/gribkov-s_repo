@@ -3,8 +3,6 @@ kind: Application
 metadata:
   name: kubernetes-networks
   namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-options: CreateNamespace=true
 spec:
   project: otus
   source:
@@ -12,7 +10,5 @@ spec:
     targetRevision: HEAD
     path: kubernetes-networks/manifests
   destination:
-    name: catg80tbd2h0kcbrtiac
+    server: https://kubernetes.default.svc
     namespace: homework
-  syncPolicy:
-    manual: {}

@@ -11,6 +11,9 @@ spec:
   - "https://github.com/Kuber-2025-04OTUS/gribkov-s_repo.git"
   destinations:
   - namespace: '!argocd'
-    name: catg80tbd2h0kcbrtiac
+    server: https://kubernetes.default.svc
   - namespace: '*'
-    name: catg80tbd2h0kcbrtiac
+    server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
