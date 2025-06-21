@@ -11,10 +11,10 @@ spec:
     path: kubernetes-templating/helmcharts/kubernetes-templating
     helm:
       parameters:
+      - name: namespace.name
+        value: homework-helm
       - name: deployment.replicaCount
         value: "3"
-      - name: deployment.nodeSelector.homework
-        value: "true"
   destination:
     server: https://kubernetes.default.svc
     namespace: homework-helm
