@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: otus
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: Otus Kubernetes 2025-04
+  sourceRepos:
+  - "https://github.com/Kuber-2025-04OTUS/gribkov-s_repo.git"
+  destinations:
+  - namespace: '!argocd'
+    server: https://kubernetes.default.svc
+  - namespace: '*'
+    server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
