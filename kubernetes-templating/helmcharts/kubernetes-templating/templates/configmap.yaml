@@ -3,14 +3,14 @@ kind: ConfigMap
 metadata:
   name: {{ .Values.configmap.nginxConf.name }}
   namespace: {{ .Values.namespace.name }}
-  data:
-    default.conf: |
-      server {
-          listen {{ .Values.deployment.containers.webserver.port }};
-          listen [::]:{{ .Values.deployment.containers.webserver.port }};
+data:
+  default.conf: |
+    server {
+        listen {{ .Values.deployment.containers.webserver.port }};
+        listen [::]:{{ .Values.deployment.containers.webserver.port }};
 
-          location / {
-            root   {{ .Values.deployment.containers.webserver.volumeMounts.filesExchange }};
-            index  {{ .Values.configmap.nginxConf.index }};
-          }
-      }
+        location / {
+          root   {{ .Values.deployment.containers.webserver.volumeMounts.filesExchange }};
+          index  {{ .Values.configmap.nginxConf.index }};
+        }
+    }
