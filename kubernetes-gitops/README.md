@@ -28,13 +28,17 @@
 ## Выполнение
 ### Подготовка окружения
 #### Создание taints и labels на нодах
-kubectl taint nodes <infrastructure node id> node-role=infra:NoSchedule
-kubectl label nodes <infrastructure node id> node-role=infra
-kubectl label nodes <apps node id> homework=true
+*kubectl taint nodes <infrastructure node id> node-role=infra:NoSchedule*
+
+*kubectl label nodes <infrastructure node id> node-role=infra*
+
+*kubectl label nodes <apps node id> homework=true*
 
 #### Создание namespace
 *kubectl create namespace argocd*
+
 *kubectl create namespace homework*
+
 *kubectl create namespace homework-helm*
 
 #### Установка ingress контроллера
@@ -42,6 +46,7 @@ kubectl label nodes <apps node id> homework=true
 
 #### Установка ArgoCD
 *helm pull oci://cr.yandex/yc-marketplace/yandex-cloud/argo/chart/argo-cd --version 7.3.11-2 --untar*
+
 *helm install -f ./manifests/values.yaml argocd ./argo-cd/ --namespace argocd*
 
 ![screenshot](images/argocd_pods.jpg)
@@ -50,10 +55,11 @@ kubectl label nodes <apps node id> homework=true
 *kubectl apply -f ./manifests/appproject.yaml*
 
 #### Доступ к ArgoCD UI
-Логин - admin, пароль получить с помощью команды
-*kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d*
-
 *kubectl port-forward service/argocd-server -n argocd 8080:443*
+
+Логин - admin, пароль получить с помощью команды
+
+*kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d*
 
 Далее октрыть в браузере ссылку *http://localhost:8080*, ввести логин и пароль
 
