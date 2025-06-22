@@ -10,14 +10,14 @@
  - Создать project с именем otus c репозиторием с ДЗ курса в качестве source и кластером, в который установлен ArgoCD
 
 ## Задача 1
-Создать приложение ArgoCD, использовав репозиторий с приложением из ДЗ kubernetes-networks, со следующими паретрами:
+Создать приложение ArgoCD, использовав репозиторий с приложением из ДЗ kubernetes-networks, со следующими параметрами:
 - Sync policy – manual
 - Namespace - homework
 - Проект – otus
 - nodeSelector позволяет установить приложение на одну из нод кластера
 
 ## Задача 2
-Создать приложение ArgoCD, использовав репозиторий с приложением из ДЗ kubernetes-templating, со следующими паретрами:
+Создать приложение ArgoCD, использовав репозиторий с приложением из ДЗ kubernetes-templating, со следующими параметрами:
 - Sync policy – Auto
 - AutoHeal – true
 - Namespace - homework-helm
@@ -62,7 +62,7 @@
 
 *kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d*
 
-Далее октрыть в браузере ссылку *http://localhost:8080*, ввести логин и пароль
+Далее открыть в браузере ссылку *http://localhost:8080*, ввести логин и пароль
 
 ![screenshot](images/argocd_init.jpg)
 
