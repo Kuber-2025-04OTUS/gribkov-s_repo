@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kubernetes-networks
+  namespace: argocd
+spec:
+  project: otus
+  source:
+    repoURL: https://github.com/Kuber-2025-04OTUS/gribkov-s_repo.git
+    targetRevision: HEAD
+    path: kubernetes-networks/manifests
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: homework
