@@ -27,12 +27,13 @@
 
 ## Выполнение
 ### Подготовка окружения
+
 #### Создание taints и labels на нодах
-*kubectl taint nodes <infrastructure node id> node-role=infra:NoSchedule*
+*kubectl taint nodes <..infrastructure node id..> node-role=infra:NoSchedule*
 
-*kubectl label nodes <infrastructure node id> node-role=infra*
+*kubectl label nodes <..infrastructure node id..> node-role=infra*
 
-*kubectl label nodes <apps node id> homework=true*
+*kubectl label nodes <..apps node id..> homework=true*
 
 #### Создание namespace
 *kubectl create namespace argocd*
