@@ -21,7 +21,7 @@ spec:
   initContainers:
   - name: init
     image: busybox:1.28
-    command: ["/bin/sh", "-c", "echo '<!doctype html><title>kubernetes-intro</title>' > /init/index.html"]
+    command: ["/bin/sh", "-c", "echo '<!doctype html><title>kubernetes-debug</title>' > /init/index.html"]
     volumeMounts:
     - name: files
       mountPath: /init
